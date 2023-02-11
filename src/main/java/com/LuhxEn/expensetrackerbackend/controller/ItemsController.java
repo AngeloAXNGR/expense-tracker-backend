@@ -3,6 +3,7 @@ package com.LuhxEn.expensetrackerbackend.controller;
 import com.LuhxEn.expensetrackerbackend.model.Items;
 import com.LuhxEn.expensetrackerbackend.repository.ExpenseRepository;
 import com.LuhxEn.expensetrackerbackend.repository.ItemsRepository;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,4 +39,22 @@ public class ItemsController {
         }).orElseThrow(() -> new RuntimeException());
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
+
+    @PutMapping("/items/{id}")
+    public ResponseEntity<Items> updateItem(@PathVariable("id") long id, @RequestBody Items itemRequest){
+        Items item = itemsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException());
+        item.setName(itemRequest.getName());
+        item.setPrice(itemRequest.getPrice());
+        item.setQuantity(itemRequest.getQuantity());
+
+        return new ResponseEntity<>(itemsRepository.save(item), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/items/{id}")
+    public ResponseEntity<Items> deleteItem(@PathVariable("id") long id){
+        itemsRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }
