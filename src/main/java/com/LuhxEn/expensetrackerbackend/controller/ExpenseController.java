@@ -44,4 +44,23 @@ public class ExpenseController {
         Expense _expense = expenseRepository.save(new Expense(expense.getTitle(), expense.getRecipient(), expense.getAllowance(),expense.getDescription()));
         return new ResponseEntity<>(_expense, HttpStatus.CREATED);
     }
+
+    @PutMapping("/expenses/{id}")
+    public ResponseEntity<Expense> updateExpense(@PathVariable("id") long id, @RequestBody Expense expense){
+        Expense _expense = expenseRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException());
+        _expense.setTitle((expense.getTitle()));
+        _expense.setDescription(expense.getDescription());
+        _expense.setAllowance(expense.getAllowance());
+        _expense.setRecipient(expense.getRecipient());
+
+        return new ResponseEntity<>(expenseRepository.save(_expense), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/expenses/{id}")
+    public ResponseEntity<Expense> deleteExpense(@PathVariable("id") long id){
+        expenseRepository.deleteById(id);
+
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
