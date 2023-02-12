@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 @Entity
 @Table(name="expenses")
 public class Expense {
+    public long getId() {
+        return id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator="expenses_generator")
     private long id;

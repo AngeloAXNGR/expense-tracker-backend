@@ -8,6 +8,10 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name="items")
 public class Items {
+    public long getId() {
+        return id;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "items_generator")
     private long id;
