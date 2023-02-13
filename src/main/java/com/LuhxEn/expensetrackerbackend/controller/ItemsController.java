@@ -31,6 +31,13 @@ public class ItemsController {
         return new ResponseEntity<>(items, HttpStatus.OK);
     }
 
+    @GetMapping("/items/{id}")
+    public ResponseEntity<Items> getItemById(@PathVariable("id") long id){
+        Items item = itemsRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException());
+        return new ResponseEntity<>(item, HttpStatus.OK);
+    }
+
     @PostMapping("/expenses/{expenseId}/items")
     public ResponseEntity<Items> createItems(@PathVariable(value="expenseId") long expenseId, @RequestBody Items itemRequest){
         Items item = expenseRepository.findById(expenseId).map(expense -> {
